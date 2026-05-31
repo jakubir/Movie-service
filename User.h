@@ -3,7 +3,7 @@
 
 #include <string>
 
-class Database; // forward declaration
+class Database; // declaration
 
 class User {
 	protected:

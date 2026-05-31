@@ -54,7 +54,7 @@ void Database::loadMovies()
 			movies.push_back(Movie(title, director, year));
 		}
 	}
-	// Load ratings and reviews separately if needed, but for simplicity, assume movies.txt has basic info
+	// Load ratings and reviews separately
 }
 
 void Database::saveMovies()
@@ -63,7 +63,7 @@ void Database::saveMovies()
 	for (auto& m : movies) {
 		file << m.getTitle() << "|" << m.getDirector() << "|" << m.getYear() << std::endl;
 	}
-	// Save ratings and reviews to separate files if needed
+	// Save ratings and reviews to separate files
 	// check for | in strings
 }
 
