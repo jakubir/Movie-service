@@ -43,10 +43,7 @@ void Database::saveUsers()
     std::ofstream file("users.txt");
 
     for (auto u : users) 
-    {
-        std::string type = dynamic_cast<Admin*>(u) ? "admin" : "user";
-        file << type << " " << u->getUsername() << " " << u->getPassword() << "\n";
-    }
+        file << u->getRole() << " " << u->getUsername() << " " << u->getPassword() << "\n";
 }
 
 void Database::loadMovies()

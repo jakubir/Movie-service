@@ -120,3 +120,8 @@ void RegularUser::addReview(Database& db)
 	else
 		std::cout << "Invalid index.\n";
 }
+
+std::string RegularUser::getRole()
+{
+	return "Regular";
+}

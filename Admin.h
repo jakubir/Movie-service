@@ -14,6 +14,7 @@ class Admin : public User
 		void menu(Database& db);
 		void addMovie(Database& db);
 		void deleteMovie(Database& db);
+		std::string getRole();
 };
 
 #endif

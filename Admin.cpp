@@ -69,3 +69,8 @@ void Admin::deleteMovie(Database& db)
 	} else
 		std::cout << "Invalid index.\n";
 }
+
+std::string Admin::getRole()
+{
+	return "Admin";
+}

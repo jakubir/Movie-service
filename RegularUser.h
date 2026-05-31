@@ -15,6 +15,7 @@ class RegularUser : public User
         void rateMovie(Database& db);
         void viewMovieReviews(Database& db);
 		void addReview(Database& db);
+		std::string getRole();
 };
 
 #endif
