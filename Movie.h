@@ -23,20 +23,20 @@ class Movie {
 		std::vector<Review> reviews;
 
 	public:
-		Movie(std::string t, std::string d, int y) : title(t), director(d), year(y) {}
+		Movie(std::string title, std::string director, int year);
 
-		std::string getTitle() { return title; }
-
-		std::string getDirector() { return director; }
-
-		int getYear() { return year; }
-
-		void addRating(std::string user, int r) { ratings.push_back({user, r}); }
-
-		void addReview(std::string user, std::string rev) { reviews.push_back({user, rev}); }
-
+		std::string getTitle();
+		std::string getDirector();
+		int getYear();
+		void addRating(std::string user, int rating);
+		void addReview(std::string user, std::string review);
+		void setRating(std::string user, int rating);
+		void setReview(std::string user, std::string review);
+		bool removeRating(std::string user);
+		bool removeReview(std::string user);
+		std::vector<Rating> getRatings();
+		std::vector<Review> getReviews();
 		double getAverageRating();
-
 		void displayReviews();
 };
 

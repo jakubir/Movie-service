@@ -9,12 +9,11 @@ class Database;
 class RegularUser : public User
 {
 	public:
-		RegularUser(std::string u, std::string p) : User(u, p) {}
+		RegularUser(std::string username, std::string password) : User(username, password) {}
 
-		void menu(Database& db) override;
-
-		void rateMovie(Database& db);
-
+        void menu(Database &db);
+        void rateMovie(Database& db);
+        void viewMovieReviews(Database& db);
 		void addReview(Database& db);
 };
 

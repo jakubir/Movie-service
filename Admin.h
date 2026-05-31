@@ -9,11 +9,11 @@ class Database;
 class Admin : public User
 {
 	public:
-		Admin(std::string u, std::string p) : User(u, p) {}
+		Admin(std::string username, std::string password) : User(username, password) {}
 
-		void menu(Database& db) override;
-
+		void menu(Database& db);
 		void addMovie(Database& db);
+		void deleteMovie(Database& db);
 };
 
 #endif

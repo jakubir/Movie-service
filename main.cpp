@@ -1,6 +1,7 @@
 #include "Database.h"
 #include "Admin.h"
 #include "RegularUser.h"
+#include "InputUtils.h"
 #include <iostream>
 #include <string>
 
@@ -10,11 +11,10 @@ int main()
 	db.loadUsers();
 	db.loadMovies();
 
-	// Add default admin if not exists
 	if (!db.authenticate("admin", "admin"))
-		db.addUser(new Admin("admin", "admin"));
+		db.addUser(new Admin("admin", "admin")); // Add default admin if not exists
 
-	User* currentUser = nullptr;
+	User* currentUser;
 	int choice;
 
 	std::cout << "=== Movie service ===";
@@ -24,7 +24,10 @@ int main()
 		std::cout << "2. Register\n";
 		std::cout << "3. Exit\n";
 		std::cout << "Choice: ";
-		std::cin >> choice;
+		if (!readInt(choice)) {
+			std::cout << "Invalid choice\n";
+			continue;
+		}
 
 		if (choice == 1) 
 		{
@@ -33,12 +36,10 @@ int main()
 			std::cin >> username;
 			std::cout << "Password: ";
 			std::cin >> password;
+			
 			currentUser = db.authenticate(username, password);
 			if (currentUser) 
-			{
 				currentUser->menu(db);
-				currentUser = nullptr;
-			} 
 			else
 				std::cout << "Invalid credentials.\n";
 		} 
@@ -49,9 +50,11 @@ int main()
 			std::cin >> username;
 			std::cout << "Password: ";
 			std::cin >> password;
-			// check for existing users
-			db.addUser(new RegularUser(username, password));
-			std::cout << "User registered.\n";
+
+            if (db.addUser(new RegularUser(username, password))) // check if username already exists
+                std::cout << "User registered.\n";
+			else
+				std::cout << "User already exists.\n";
 		}
 	} while (choice != 3);
 

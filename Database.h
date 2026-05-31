@@ -15,20 +15,14 @@ class Database {
 		~Database();
 
 		void loadUsers();
-
 		void saveUsers();
-
 		void loadMovies();
-
 		void saveMovies();
-
-		void addUser(User* u);
-
-		void addMovie(Movie m);
-
-		User* authenticate(std::string u, std::string p);
-
+		bool addUser(User* user);
+		void addMovie(Movie movie);
+		User* authenticate(std::string username, std::string password);
 		std::vector<Movie>& getMovies();
+		Movie* findMovie(std::vector<Movie>& movies, std::string title, std::string director, int year);
 };
 
 #endif

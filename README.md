@@ -22,7 +22,7 @@ A C++ program that simulates a movie service similar to Filmweb or IMDb. It uses
 
 Compile with:
 ```
-g++ main.cpp Admin.cpp RegularUser.cpp Movie.cpp Database.cpp -o movie_service
+g++ main.cpp Admin.cpp RegularUser.cpp Movie.cpp Database.cpp User.cpp InputUtils.cpp -o movie_service
 ```
 
 Then run:

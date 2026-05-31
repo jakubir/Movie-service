@@ -2,93 +2,150 @@
 #include "Admin.h"
 #include "RegularUser.h"
 #include <fstream>
-#include <sstream>
 #include <iostream>
 #include <string>
-#include <typeinfo>
+
+Movie* Database::findMovie(std::vector<Movie>& movies, std::string title, std::string director, int year)
+{
+    for (auto& movie : movies) 
+    {
+        if (movie.getTitle() == title && movie.getDirector() == director && movie.getYear() == year)
+            return &movie;
+    }
+
+    return nullptr;
+}
 
 Database::~Database()
 {
-	for (auto u : users) delete u;
+    for (auto u : users) 
+        delete u;
 }
 
 void Database::loadUsers()
 {
-	std::ifstream file("users.txt");
-	std::string line;
-	while (std::getline(file, line)) 
-	{
-		std::stringstream ss(line);
-		std::string type, username, password;
-		ss >> type >> username >> password;
-		if (type == "admin")
-			users.push_back(new Admin(username, password));
-		else if (type == "user")
-			users.push_back(new RegularUser(username, password));
-	}
+    users.clear();
+
+    std::ifstream file("users.txt");
+    std::string type, username, password;
+
+    while (file >> type >> username >> password) 
+    {
+        if (type == "admin")
+            users.push_back(new Admin(username, password));
+        else if (type == "user")
+            users.push_back(new RegularUser(username, password));
+    }
 }
 
 void Database::saveUsers()
 {
-	std::ofstream file("users.txt");
-	for (auto u : users) 
-	{
-		std::string type = dynamic_cast<Admin*>(u) ? "admin" : "user";
-		file << type << " " << u->getUsername() << " " << u->getPassword() << std::endl;
-	}
+    std::ofstream file("users.txt");
+
+    for (auto u : users) 
+    {
+        std::string type = dynamic_cast<Admin*>(u) ? "admin" : "user";
+        file << type << " " << u->getUsername() << " " << u->getPassword() << "\n";
+    }
 }
 
 void Database::loadMovies()
 {
-	std::ifstream file("movies.txt");
-	std::string line;
-	while (std::getline(file, line)) 
-	{
-		size_t pos1 = line.find('|');
-		size_t pos2 = line.find('|', pos1 + 1);
-		if (pos1 != std::string::npos && pos2 != std::string::npos) 
-		{
-			std::string title = line.substr(0, pos1);
-			std::string director = line.substr(pos1 + 1, pos2 - pos1 - 1);
-			int year = std::stoi(line.substr(pos2 + 1));
-			movies.push_back(Movie(title, director, year));
-		}
-	}
-	// Load ratings and reviews separately
+    movies.clear();
+
+    std::ifstream moviesFile("movies.txt");
+    std::string title, director, yearStr;
+    
+    while (
+        std::getline(moviesFile, title, '|') && 
+        std::getline(moviesFile, director, '|') && 
+        std::getline(moviesFile, yearStr)
+        ) 
+    {
+        movies.push_back(Movie(title, director, std::stoi(yearStr)));
+    }
+
+    std::ifstream ratingsFile("ratings.txt");
+    std::string user, ratingStr;
+
+    while (
+        std::getline(ratingsFile, title, '|') && 
+        std::getline(ratingsFile, director, '|') && 
+        std::getline(ratingsFile, yearStr, '|') && 
+        std::getline(ratingsFile, user, '|') && 
+        std::getline(ratingsFile, ratingStr)
+        ) 
+    {
+        int year = std::stoi(yearStr);
+        int rating = std::stoi(ratingStr);
+
+        if (auto movie = findMovie(movies, title, director, year))
+            movie->addRating(user, rating);
+    }
+
+    std::ifstream reviewsFile("reviews.txt");
+    std::string review;
+
+    while (
+        std::getline(reviewsFile, title, '|') && 
+        std::getline(reviewsFile, director, '|') && 
+        std::getline(reviewsFile, yearStr, '|') && 
+        std::getline(reviewsFile, user, '|') && 
+        std::getline(reviewsFile, review)
+        ) 
+    {
+        int year = std::stoi(yearStr);
+
+        if (auto movie = findMovie(movies, title, director, year))
+            movie->addReview(user, review);
+    }
 }
 
 void Database::saveMovies()
 {
-	std::ofstream file("movies.txt");
-	for (auto& m : movies) {
-		file << m.getTitle() << "|" << m.getDirector() << "|" << m.getYear() << std::endl;
-	}
-	// Save ratings and reviews to separate files
-	// check for | in strings
+    std::ofstream moviesFile("movies.txt");
+    for (auto& m : movies) {
+        moviesFile << m.getTitle() << "|" << m.getDirector() << "|" << m.getYear() << "\n";
+    }
+
+    std::ofstream ratingsFile("ratings.txt");
+    for (auto& m : movies)
+        for (auto& r : m.getRatings()) 
+            ratingsFile << m.getTitle() << "|" << m.getDirector() << "|" << m.getYear() << "|" << r.user << "|" << r.rating << "\n";
+
+    std::ofstream reviewsFile("reviews.txt");
+    for (auto& m : movies)
+        for (auto& rev : m.getReviews()) 
+            reviewsFile << m.getTitle() << "|" << m.getDirector() << "|" << m.getYear() << "|" << rev.user << "|" << rev.review << "\n";
 }
 
-void Database::addUser(User* u)
+bool Database::addUser(User* u)
 {
-	users.push_back(u);
-	saveUsers();
+    for (auto user : users)
+        if (user->getUsername() == u->getUsername())
+            return false;
+
+    users.push_back(u);
+    saveUsers();
+    return true;
 }
 
 void Database::addMovie(Movie m)
 {
-	movies.push_back(m);
-	saveMovies();
+    movies.push_back(m);
+    saveMovies();
 }
 
 User* Database::authenticate(std::string u, std::string p)
 {
-	for (auto user : users)
-		if (user->getUsername() == u && user->checkPassword(p)) 
-			return user;
+    for (auto user : users)
+        if (user->getUsername() == u && user->getPassword() == p)
+            return user;
 
-	return nullptr;
+    return nullptr;
 }
 
 std::vector<Movie>& Database::getMovies()
 {
-	return movies;
+    return movies;
 }
