@@ -8,7 +8,7 @@ void Admin::menu(Database& db)
 {
 	int choice;
 	do {
-		std::cout << "Admin Menu:\n";
+		std::cout << "\nAdmin Menu:\n";
 		std::cout << "1. Add Movie\n";
 		std::cout << "2. View Movies\n";
 		std::cout << "3. Logout\n";
@@ -19,9 +19,11 @@ void Admin::menu(Database& db)
 				addMovie(db);
 				break;
 			case 2:
-				for (auto& m : db.getMovies()) {
-					std::cout << m.getTitle() << " by " << m.getDirector() << " (" << m.getYear() << ")" << std::endl;
-				}
+				if (db.getMovies().size() == 0)
+					std::cout << "No movies in database\n";
+				else
+					for (auto& m : db.getMovies())
+						std::cout << m.getTitle() << " by " << m.getDirector() << " (" << m.getYear() << ")\n";
 				break;
 			case 3:
 				break;

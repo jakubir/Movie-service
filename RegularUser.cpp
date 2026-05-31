@@ -8,8 +8,10 @@
 void RegularUser::menu(Database& db)
 {
 	int choice;
-	do {
-		std::cout << "User Menu:\n";
+	
+	do 
+	{
+		std::cout << "\nUser Menu:\n";
 		std::cout << "1. View Movies\n";
 		std::cout << "2. Rate Movie\n";
 		std::cout << "3. Add Review\n";
@@ -18,7 +20,8 @@ void RegularUser::menu(Database& db)
 		std::cin >> choice;
 		switch (choice) {
 			case 1:
-				for (size_t i = 0; i < db.getMovies().size(); ++i) {
+				for (size_t i = 0; i < db.getMovies().size(); ++i) 
+				{
 					auto& m = db.getMovies()[i];
 					std::cout << i+1 << ". " << m.getTitle() << " by " << m.getDirector() << " (" << m.getYear() << ") Avg Rating: " << m.getAverageRating() << std::endl;
 					m.displayReviews();
@@ -43,15 +46,17 @@ void RegularUser::rateMovie(Database& db)
 	std::cout << "Enter movie index to rate: ";
 	size_t index;
 	std::cin >> index;
-	if (index > 0 && index <= db.getMovies().size()) {
+	if (index > 0 && index <= db.getMovies().size()) 
+	{
 		int rating;
 		std::cout << "Enter rating (1-10): ";
 		std::cin >> rating;
 		db.getMovies()[index-1].addRating(username, rating);
 		std::cout << "Rating added.\n";
-	} else {
+		// save rating together with name, check for existing rating for this name
+	} 
+	else
 		std::cout << "Invalid index.\n";
-	}
 }
 
 void RegularUser::addReview(Database& db)
@@ -59,14 +64,16 @@ void RegularUser::addReview(Database& db)
 	std::cout << "Enter movie index to review: ";
 	size_t index;
 	std::cin >> index;
-	if (index > 0 && index <= db.getMovies().size()) {
+	if (index > 0 && index <= db.getMovies().size()) 
+	{
 		std::string review;
 		std::cout << "Enter review: ";
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		std::getline(std::cin, review);
 		db.getMovies()[index-1].addReview(username, review);
 		std::cout << "Review added.\n";
-	} else {
+		// save review together with name, check for existing review for this name
+	} 
+	else
 		std::cout << "Invalid index.\n";
-	}
 }
