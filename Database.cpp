@@ -135,12 +135,44 @@ void Database::saveMovies()
     for (int i = 0; i < movies.size(); ++i)
     {
         auto& m = movies[i];
-        
-        const auto& ratings = m.getRatings();
-        const auto& reviews = m.getReviews();
-        
-        for (size_t j = 0; j < ratings.size(); ++j)
-            userdataFile << i << "|" << ratings[j].user << "|" << ratings[j].rating << "|" << reviews[j].review << "\n";
+
+        struct UserData { std::string user; int rating; std::string review; };
+        std::vector<UserData> userdata;
+
+        for (auto& r : m.getRatings())
+        {
+            bool found = false;
+            for (auto& entry : userdata)
+            {
+                if (entry.user == r.user)
+                {
+                    entry.rating = r.rating;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+                userdata.push_back({r.user, r.rating, ""});
+        }
+
+        for (auto& rev : m.getReviews())
+        {
+            bool found = false;
+            for (auto& entry : userdata)
+            {
+                if (entry.user == rev.user)
+                {
+                    entry.review = rev.review;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+                userdata.push_back({rev.user, 0, rev.review});
+        }
+
+        for (auto& entry : userdata)
+            userdataFile << i << "|" << entry.user << "|" << entry.rating << "|" << entry.review << "\n";
     }
 }
 
