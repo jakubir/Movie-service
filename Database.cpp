@@ -129,7 +129,6 @@ void Database::saveMovies()
     {
         auto& m = movies[i];
         
-        // Combine ratings and reviews by username
         std::map<std::string, std::pair<int, std::string>> userdata; // username -> (rating, review)
         
         for (auto& r : m.getRatings())
@@ -138,7 +137,6 @@ void Database::saveMovies()
         for (auto& rev : m.getReviews())
             userdata[rev.user].second = rev.review;
         
-        // Write combined userdata
         for (auto& entry : userdata)
             userdataFile << i << "|" << entry.first << "|" << entry.second.first << "|" << entry.second.second << "\n";
     }
