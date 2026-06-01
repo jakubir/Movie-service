@@ -53,6 +53,14 @@ void Admin::addMovie(Database& db)
 	std::getline(std::cin, title);
 	std::cout << "Enter director: ";
 	std::getline(std::cin, director);
+
+	// check if title or director does not contain |, used as a delimiter in file storage
+	if (title.find('|') != std::string::npos || director.find('|') != std::string::npos) 
+	{
+		std::cout << "Title and director cannot contain '|'\n";
+		return;
+	}
+
 	std::cout << "Enter year: ";
 	std::cin >> year;
 

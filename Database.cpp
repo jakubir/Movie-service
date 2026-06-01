@@ -69,6 +69,10 @@ void Database::loadMovies()
         std::getline(moviesFile, yearStr)
         ) 
     {
+        // check if year is a valid integer
+        if (yearStr.empty() || yearStr.find_first_not_of("0123456789") != std::string::npos)
+            continue;
+            
         movies.push_back(Movie(title, director, std::stoi(yearStr)));
     }
 
@@ -89,6 +93,10 @@ void Database::loadMovies()
         std::getline(userdataFile, review)
         ) 
     {
+        // check if index and rating are valid integers
+        if (indexStr.empty() || indexStr.find_first_not_of("0123456789") != std::string::npos || ratingStr.empty() || ratingStr.find_first_not_of("0123456789") != std::string::npos)
+            continue;
+
         int index = std::stoi(indexStr);
         int rating = std::stoi(ratingStr);
 
