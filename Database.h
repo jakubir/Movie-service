@@ -20,6 +20,7 @@ class Database {
 		void saveMovies();
 		bool addUser(User* user);
 		void addMovie(Movie movie);
+		void removeMovie(int index);
 		User* authenticate(std::string username, std::string password);
 		std::vector<Movie>& getMovies();
 

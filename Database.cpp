@@ -171,6 +171,15 @@ void Database::addMovie(Movie m)
     saveMovies();
 }
 
+void Database::removeMovie(int index)
+{
+    if (index < 0 || index >= static_cast<int>(movies.size()))
+        return;
+
+    movies.erase(movies.begin() + index);
+    saveMovies();
+}
+
 User* Database::authenticate(std::string u, std::string p)
 {
     for (auto user : users)

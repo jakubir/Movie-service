@@ -81,10 +81,9 @@ void Admin::deleteMovie(Database& db)
 
 	if (index > 0 && index <= db.getMovies().size())  // validate index range
 	{
-		db.getMovies().erase(db.getMovies().begin() + index - 1);
-		db.saveMovies();
+		db.removeMovie(index - 1);
 		std::cout << "Movie deleted.\n";
-	} 
+	}
 	else
 		std::cout << "Invalid index.\n";
 }
