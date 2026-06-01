@@ -4,15 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-
-Movie* Database::findMovie(std::vector<Movie>& movies, std::string title, std::string director, int year)
-{
-    for (auto& movie : movies) 
-        if (movie.getTitle() == title && movie.getDirector() == director && movie.getYear() == year)
-            return &movie;
-
-    return nullptr;
-}
+#include <map>
 
 Database::~Database()
 {
@@ -25,6 +17,13 @@ void Database::loadUsers()
     users.clear();
 
     std::ifstream file("users.txt");
+    
+    if (!file.is_open()) 
+    {
+        std::cout << "Could not open users.txt\n";
+        return;
+    }
+
     std::string type, username, password;
 
     while (file >> type >> username >> password) 
@@ -40,6 +39,12 @@ void Database::saveUsers()
 {
     std::ofstream file("users.txt");
 
+    if (!file.is_open()) 
+    {
+        std::cout << "Could not open users.txt\n";
+        return;
+    }
+
     for (auto u : users) 
         file << u->getRole() << " " << u->getUsername() << " " << u->getPassword() << "\n";
 }
@@ -49,6 +54,13 @@ void Database::loadMovies()
     movies.clear();
 
     std::ifstream moviesFile("movies.txt");
+
+    if (!moviesFile.is_open()) 
+    {
+        std::cout << "Could not open movies.txt\n";
+        return;
+    }
+
     std::string title, director, yearStr;
     
     while (
@@ -60,58 +72,76 @@ void Database::loadMovies()
         movies.push_back(Movie(title, director, std::stoi(yearStr)));
     }
 
-    std::ifstream ratingsFile("ratings.txt");
-    std::string user, ratingStr;
+    std::ifstream userdataFile("userdata.txt");
 
-    while (
-        std::getline(ratingsFile, title, '|') && 
-        std::getline(ratingsFile, director, '|') && 
-        std::getline(ratingsFile, yearStr, '|') && 
-        std::getline(ratingsFile, user, '|') && 
-        std::getline(ratingsFile, ratingStr)
-        ) 
+    if (!userdataFile.is_open()) 
     {
-        int year = std::stoi(yearStr);
-        int rating = std::stoi(ratingStr);
-
-        if (auto movie = findMovie(movies, title, director, year))
-            movie->addRating(user, rating);
+        std::cout << "Could not open userdata.txt\n";
+        return;
     }
 
-    std::ifstream reviewsFile("reviews.txt");
-    std::string review;
+    std::string indexStr, user, ratingStr, review;
 
     while (
-        std::getline(reviewsFile, title, '|') && 
-        std::getline(reviewsFile, director, '|') && 
-        std::getline(reviewsFile, yearStr, '|') && 
-        std::getline(reviewsFile, user, '|') && 
-        std::getline(reviewsFile, review)
+        std::getline(userdataFile, indexStr, '|') && 
+        std::getline(userdataFile, user, '|') && 
+        std::getline(userdataFile, ratingStr, '|') && 
+        std::getline(userdataFile, review)
         ) 
     {
-        int year = std::stoi(yearStr);
+        int index = std::stoi(indexStr);
+        int rating = std::stoi(ratingStr);
 
-        if (auto movie = findMovie(movies, title, director, year))
-            movie->addReview(user, review);
+        if (index >= 0 && index < movies.size())
+        {
+            if (rating > 0)
+                movies[index].addRating(user, rating);
+            
+            if (!review.empty())
+                movies[index].addReview(user, review);
+        }
     }
 }
 
 void Database::saveMovies()
 {
     std::ofstream moviesFile("movies.txt");
+
+    if (!moviesFile.is_open()) 
+    {
+        std::cout << "Could not open movies.txt\n";
+        return;
+    }
+
     for (auto& m : movies) {
         moviesFile << m.getTitle() << "|" << m.getDirector() << "|" << m.getYear() << "\n";
     }
 
-    std::ofstream ratingsFile("ratings.txt");
-    for (auto& m : movies)
-        for (auto& r : m.getRatings()) 
-            ratingsFile << m.getTitle() << "|" << m.getDirector() << "|" << m.getYear() << "|" << r.user << "|" << r.rating << "\n";
+    std::ofstream userdataFile("userdata.txt");
 
-    std::ofstream reviewsFile("reviews.txt");
-    for (auto& m : movies)
-        for (auto& rev : m.getReviews()) 
-            reviewsFile << m.getTitle() << "|" << m.getDirector() << "|" << m.getYear() << "|" << rev.user << "|" << rev.review << "\n";
+    if (!userdataFile.is_open()) 
+    {
+        std::cout << "Could not open userdata.txt\n";
+        return;
+    }
+
+    for (int i = 0; i < movies.size(); ++i)
+    {
+        auto& m = movies[i];
+        
+        // Combine ratings and reviews by username
+        std::map<std::string, std::pair<int, std::string>> userdata; // username -> (rating, review)
+        
+        for (auto& r : m.getRatings())
+            userdata[r.user].first = r.rating;
+        
+        for (auto& rev : m.getReviews())
+            userdata[rev.user].second = rev.review;
+        
+        // Write combined userdata
+        for (auto& entry : userdata)
+            userdataFile << i << "|" << entry.first << "|" << entry.second.first << "|" << entry.second.second << "\n";
+    }
 }
 
 bool Database::addUser(User* u)
@@ -119,7 +149,10 @@ bool Database::addUser(User* u)
     // check if username already exists
     for (auto user : users)
         if (user->getUsername() == u->getUsername()) 
+        {
+            delete u;
             return false;
+        }
 
     users.push_back(u);
     saveUsers();

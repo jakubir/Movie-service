@@ -145,5 +145,5 @@ void RegularUser::addReview(Database& db)
 
 std::string RegularUser::getRole()
 {
-	return "Regular";
+    return "user";
 }

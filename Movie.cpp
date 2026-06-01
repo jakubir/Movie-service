@@ -111,6 +111,6 @@ double Movie::getAverageRating()
 
 void Movie::displayReviews()
 {
-    for (auto& rev : reviews)
-        std::cout << rev.user << ": " << rev.review << std::endl;
+    for (auto& r : reviews)
+        std::cout << r.user << ": " << r.review << std::endl;
 }

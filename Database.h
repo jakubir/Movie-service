@@ -22,7 +22,7 @@ class Database {
 		void addMovie(Movie movie);
 		User* authenticate(std::string username, std::string password);
 		std::vector<Movie>& getMovies();
-		Movie* findMovie(std::vector<Movie>& movies, std::string title, std::string director, int year);
+
 };
 
 #endif

@@ -83,5 +83,5 @@ void Admin::deleteMovie(Database& db)
 
 std::string Admin::getRole()
 {
-	return "Admin";
+    return "admin";
 }
