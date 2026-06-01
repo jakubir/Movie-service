@@ -13,6 +13,7 @@ void User::viewMovies(Database& db)
     for (int i = 0; i < db.getMovies().size(); ++i) 
     {
         auto& m = db.getMovies()[i];
+        
         std::cout << i + 1 << ". " << m.getTitle() << " by " << m.getDirector() << " (" << m.getYear() << ") ";
         m.getAverageRating() ? std::cout << "Avg Rating: " << m.getAverageRating() : std::cout << "No ratings";
         std::cout << "\n";

@@ -65,13 +65,13 @@ void Admin::deleteMovie(Database& db)
 	int index;
 	std::cout << "Enter movie index to delete: ";
 
-	if (!readIndex(index)) 
+	if (!readIndex(index)) // allow only integers for index
 	{
 		std::cout << "Invalid index.\n";
 		return;
 	}
 
-	if (index > 0 && index <= db.getMovies().size()) 
+	if (index > 0 && index <= db.getMovies().size())  // validate index range
 	{
 		db.getMovies().erase(db.getMovies().begin() + index - 1);
 		db.saveMovies();

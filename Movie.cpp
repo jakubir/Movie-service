@@ -33,7 +33,7 @@ void Movie::setRating(std::string user, int rating)
     for (auto& r : ratings)
         if (r.user == user) 
         {
-            if (rating == 0)
+            if (rating == 0) // remove rating if 0
                 removeRating(user);
             else
                 r.rating = rating;
@@ -50,7 +50,7 @@ void Movie::setReview(std::string user, std::string review)
     for (auto& r : reviews)
         if (r.user == user) 
         {
-            if (review.empty())
+            if (review.empty()) // remove review if empty
                 removeReview(user);
             else
                 r.review = review;
@@ -99,9 +99,10 @@ std::vector<Review> Movie::getReviews()
 double Movie::getAverageRating()
 {
     if (ratings.empty())
-        return 0.0;
+        return 0;
 
     double sum = 0;
+
     for (auto& r : ratings)
         sum += r.rating;
 

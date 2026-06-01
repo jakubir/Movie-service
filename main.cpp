@@ -24,38 +24,50 @@ int main()
 		std::cout << "2. Register\n";
 		std::cout << "3. Exit\n";
 		std::cout << "Choice: ";
+
 		if (!readIndex(choice)) {
 			std::cout << "Invalid choice\n";
 			continue;
 		}
 
-		if (choice == 1) // login
-		{
-			std::string username, password;
-			std::cout << "Username: ";
-			std::cin >> username;
-			std::cout << "Password: ";
-			std::cin >> password;
-			
-			currentUser = db.authenticate(username, password);
-			if (currentUser) 
-				currentUser->menu(db);
-			else
-				std::cout << "Invalid credentials.\n";
-		} 
-		else if (choice == 2) // register
-		{
-			std::string username, password;
-			std::cout << "Username: ";
-			std::cin >> username;
-			std::cout << "Password: ";
-			std::cin >> password;
+		std::string username, password;
 
-            if (db.addUser(new RegularUser(username, password))) // check if username already exists
-                std::cout << "User registered.\n";
-			else
-				std::cout << "User already exists.\n";
+		switch (choice)
+		{
+			case 1: // login
+				std::cout << "Username: ";
+				std::cin >> username;
+				std::cout << "Password: ";
+				std::cin >> password;
+				
+				currentUser = db.authenticate(username, password);
+				if (currentUser) 
+					currentUser->menu(db);
+				else
+					std::cout << "Invalid credentials.\n";
+
+				break;
+
+			case 2: // register
+				std::cout << "Username: ";
+				std::cin >> username;
+				std::cout << "Password: ";
+				std::cin >> password;
+
+				if (db.addUser(new RegularUser(username, password))) // check if username already exists
+					std::cout << "User registered.\n";
+				else
+					std::cout << "User already exists.\n";
+
+				break;
+
+			case 3: // exit
+				break;
+
+			default:
+				std::cout << "Invalid choice\n";
 		}
+
 	} while (choice != 3);
 
 	return 0;

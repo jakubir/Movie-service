@@ -18,11 +18,15 @@ void RegularUser::menu(Database& db)
 		std::cout << "4. Check Movie Reviews\n";
 		std::cout << "5. Logout\n";
 		std::cout << "Choice: ";
-		if (!readIndex(choice)) {
+
+		if (!readIndex(choice)) 
+		{
 			std::cout << "Invalid choice\n";
 			continue;
 		}
-		switch (choice) {
+
+		switch (choice) 
+		{
 			case 1:
 				viewMovies(db);
 				break;
@@ -45,27 +49,35 @@ void RegularUser::menu(Database& db)
 
 void RegularUser::rateMovie(Database& db)
 {
-	std::cout << "Enter movie index to rate: ";
 	int index;
-	if (!readIndex(index)) {
+	std::cout << "Enter movie index to rate: ";
+
+	if (!readIndex(index)) 
+	{
 		std::cout << "Invalid index.\n";
 		return;
 	}
+
 	if (index > 0 && index <= db.getMovies().size()) 
 	{
 		int rating;
 		std::cout << "Enter rating (1-10, or 0 to remove): ";
-		if (!readIndex(rating)) {
-			std::cout << "Invalid rating.\n";
-			return;
-		}
-		if (rating < 0 || rating > 10) 
+
+		if (!readIndex(rating)) // allow only integers for rating
 		{
 			std::cout << "Invalid rating.\n";
 			return;
 		}
+
+		if (rating < 0 || rating > 10) // validate rating range
+		{
+			std::cout << "Invalid rating.\n";
+			return;
+		}
+
 		db.getMovies()[index-1].setRating(username, rating);
 		db.saveMovies();
+
 		if (rating == 0)
 			std::cout << "Rating removed.\n";
 		else
@@ -77,16 +89,20 @@ void RegularUser::rateMovie(Database& db)
 
 void RegularUser::viewMovieReviews(Database& db)
 {
-	std::cout << "Enter movie index to view reviews: ";
 	int index;
-	if (!readIndex(index)) {
+	std::cout << "Enter movie index to view reviews: ";
+
+	if (!readIndex(index)) // allow only integers for index
+	{
 		std::cout << "Invalid index.\n";
 		return;
 	}
-	if (index > 0 && index <= db.getMovies().size()) 
+
+	if (index > 0 && index <= db.getMovies().size()) // validate index range
 	{
 		auto& movie = db.getMovies()[index-1];
 		std::cout << movie.getTitle() << " by " << movie.getDirector() << " (" << movie.getYear() << ")\n";
+
 		if (movie.getReviews().empty())
 			std::cout << "No reviews for this movie.\n";
 		else
@@ -98,20 +114,26 @@ void RegularUser::viewMovieReviews(Database& db)
 
 void RegularUser::addReview(Database& db)
 {
-	std::cout << "Enter movie index to review: ";
 	int index;
-	if (!readIndex(index)) {
+	std::cout << "Enter movie index to review: ";
+
+	if (!readIndex(index)) // allow only integers for index
+	{
 		std::cout << "Invalid index.\n";
 		return;
 	}
-	if (index > 0 && index <= db.getMovies().size()) 
+
+	if (index > 0 && index <= db.getMovies().size()) // validate index range
 	{
 		std::string review;
+
 		std::cout << "Enter review (leave empty to remove your review): ";
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		std::getline(std::cin, review);
+		
 		db.getMovies()[index-1].setReview(username, review);
 		db.saveMovies();
+
 		if (review.empty())
 			std::cout << "Review removed.\n";
 		else
