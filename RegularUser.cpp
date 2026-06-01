@@ -130,6 +130,13 @@ void RegularUser::addReview(Database& db)
 		std::cout << "Enter review (leave empty to remove your review): ";
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		std::getline(std::cin, review);
+
+		// check if review does not contain |, used as a delimiter in file storage
+		if (review.find('|') != std::string::npos)
+		{
+			std::cout << "Review cannot contain '|'\n";
+			return;
+		}
 		
 		db.getMovies()[index-1].setReview(username, review);
 		db.saveMovies();
