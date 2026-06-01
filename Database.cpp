@@ -8,10 +8,8 @@
 Movie* Database::findMovie(std::vector<Movie>& movies, std::string title, std::string director, int year)
 {
     for (auto& movie : movies) 
-    {
         if (movie.getTitle() == title && movie.getDirector() == director && movie.getYear() == year)
             return &movie;
-    }
 
     return nullptr;
 }
@@ -118,8 +116,9 @@ void Database::saveMovies()
 
 bool Database::addUser(User* u)
 {
+    // check if username already exists
     for (auto user : users)
-        if (user->getUsername() == u->getUsername())
+        if (user->getUsername() == u->getUsername()) 
             return false;
 
     users.push_back(u);

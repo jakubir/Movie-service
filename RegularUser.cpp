@@ -1,7 +1,7 @@
 #include "RegularUser.h"
 #include "Database.h"
 #include "Movie.h"
-#include "InputUtils.h"
+#include "Utils.h"
 #include <iostream>
 #include <string>
 
@@ -18,7 +18,7 @@ void RegularUser::menu(Database& db)
 		std::cout << "4. Check Movie Reviews\n";
 		std::cout << "5. Logout\n";
 		std::cout << "Choice: ";
-		if (!readInt(choice)) {
+		if (!readIndex(choice)) {
 			std::cout << "Invalid choice\n";
 			continue;
 		}
@@ -47,7 +47,7 @@ void RegularUser::rateMovie(Database& db)
 {
 	std::cout << "Enter movie index to rate: ";
 	int index;
-	if (!readInt(index)) {
+	if (!readIndex(index)) {
 		std::cout << "Invalid index.\n";
 		return;
 	}
@@ -55,7 +55,7 @@ void RegularUser::rateMovie(Database& db)
 	{
 		int rating;
 		std::cout << "Enter rating (1-10, or 0 to remove): ";
-		if (!readInt(rating)) {
+		if (!readIndex(rating)) {
 			std::cout << "Invalid rating.\n";
 			return;
 		}
@@ -79,7 +79,7 @@ void RegularUser::viewMovieReviews(Database& db)
 {
 	std::cout << "Enter movie index to view reviews: ";
 	int index;
-	if (!readInt(index)) {
+	if (!readIndex(index)) {
 		std::cout << "Invalid index.\n";
 		return;
 	}
@@ -100,7 +100,7 @@ void RegularUser::addReview(Database& db)
 {
 	std::cout << "Enter movie index to review: ";
 	int index;
-	if (!readInt(index)) {
+	if (!readIndex(index)) {
 		std::cout << "Invalid index.\n";
 		return;
 	}

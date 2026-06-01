@@ -1,6 +1,6 @@
-#include "InputUtils.h"
+#include "Utils.h"
 
-bool readInt(int& value)
+bool readIndex(int& value)
 {
     if (!(std::cin >> value)) {
         std::cin.clear();

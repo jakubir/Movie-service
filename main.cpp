@@ -1,7 +1,7 @@
 #include "Database.h"
 #include "Admin.h"
 #include "RegularUser.h"
-#include "InputUtils.h"
+#include "Utils.h"
 #include <iostream>
 #include <string>
 
@@ -24,12 +24,12 @@ int main()
 		std::cout << "2. Register\n";
 		std::cout << "3. Exit\n";
 		std::cout << "Choice: ";
-		if (!readInt(choice)) {
+		if (!readIndex(choice)) {
 			std::cout << "Invalid choice\n";
 			continue;
 		}
 
-		if (choice == 1) 
+		if (choice == 1) // login
 		{
 			std::string username, password;
 			std::cout << "Username: ";
@@ -43,7 +43,7 @@ int main()
 			else
 				std::cout << "Invalid credentials.\n";
 		} 
-		else if (choice == 2) 
+		else if (choice == 2) // register
 		{
 			std::string username, password;
 			std::cout << "Username: ";

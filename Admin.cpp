@@ -1,13 +1,14 @@
 #include "Admin.h"
 #include "Database.h"
 #include "Movie.h"
-#include "InputUtils.h"
+#include "Utils.h"
 #include <iostream>
 #include <string>
 
 void Admin::menu(Database& db)
 {
 	int choice;
+
 	do 
 	{
 		std::cout << "\nAdmin Menu:\n";
@@ -16,11 +17,15 @@ void Admin::menu(Database& db)
 		std::cout << "3. Delete Movie\n";
 		std::cout << "4. Logout\n";
 		std::cout << "Choice: ";
-		if (!readInt(choice)) {
+
+		if (!readIndex(choice)) 
+		{
 			std::cout << "Invalid choice\n";
 			continue;
 		}
-		switch (choice) {
+
+		switch (choice) 
+		{
 			case 1:
 				addMovie(db);
 				break;
@@ -42,6 +47,7 @@ void Admin::addMovie(Database& db)
 {
 	std::string title, director;
 	int year;
+
 	std::cout << "Enter title: ";
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	std::getline(std::cin, title);
@@ -49,24 +55,29 @@ void Admin::addMovie(Database& db)
 	std::getline(std::cin, director);
 	std::cout << "Enter year: ";
 	std::cin >> year;
+
 	db.addMovie(Movie(title, director, year));
 	std::cout << "Movie added.\n";
 }
 
 void Admin::deleteMovie(Database& db)
 {
-	std::cout << "Enter movie index to delete: ";
 	int index;
-	if (!readInt(index)) {
+	std::cout << "Enter movie index to delete: ";
+
+	if (!readIndex(index)) 
+	{
 		std::cout << "Invalid index.\n";
 		return;
 	}
+
 	if (index > 0 && index <= db.getMovies().size()) 
 	{
 		db.getMovies().erase(db.getMovies().begin() + index - 1);
 		db.saveMovies();
 		std::cout << "Movie deleted.\n";
-	} else
+	} 
+	else
 		std::cout << "Invalid index.\n";
 }
 

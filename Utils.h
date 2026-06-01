@@ -4,6 +4,6 @@
 #include <iostream>
 #include <limits>
 
-bool readInt(int& value);
+bool readIndex(int& value);
 
-#endif // INPUTUTILS_H
+#endif
