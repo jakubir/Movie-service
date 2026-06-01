@@ -4,7 +4,6 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <map>
 
 Database::~Database()
 {
@@ -137,16 +136,11 @@ void Database::saveMovies()
     {
         auto& m = movies[i];
         
-        std::map<std::string, std::pair<int, std::string>> userdata; // username -> (rating, review)
+        const auto& ratings = m.getRatings();
+        const auto& reviews = m.getReviews();
         
-        for (auto& r : m.getRatings())
-            userdata[r.user].first = r.rating;
-        
-        for (auto& rev : m.getReviews())
-            userdata[rev.user].second = rev.review;
-        
-        for (auto& entry : userdata)
-            userdataFile << i << "|" << entry.first << "|" << entry.second.first << "|" << entry.second.second << "\n";
+        for (size_t j = 0; j < ratings.size(); ++j)
+            userdataFile << i << "|" << ratings[j].user << "|" << ratings[j].rating << "|" << reviews[j].review << "\n";
     }
 }
 
