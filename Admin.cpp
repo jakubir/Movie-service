@@ -62,7 +62,11 @@ void Admin::addMovie(Database& db)
 	}
 
 	std::cout << "Enter year: ";
-	std::cin >> year;
+	if (!readIndex(year))
+	{
+		std::cout << "Invalid year.\n";
+		return;
+	}
 
 	db.addMovie(Movie(title, director, year));
 	std::cout << "Movie added.\n";
