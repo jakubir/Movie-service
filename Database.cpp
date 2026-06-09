@@ -139,10 +139,10 @@ void Database::saveMovies()
         struct UserData { std::string user; int rating; std::string review; };
         std::vector<UserData> userdata;
 
-        for (auto& r : m.getRatings())
+        for (auto r : m.getRatings())
         {
             bool found = false;
-            for (auto& entry : userdata)
+            for (auto entry : userdata)
             {
                 if (entry.user == r.user)
                 {
@@ -155,23 +155,23 @@ void Database::saveMovies()
                 userdata.push_back({r.user, r.rating, ""});
         }
 
-        for (auto& rev : m.getReviews())
+        for (auto r : m.getReviews())
         {
             bool found = false;
-            for (auto& entry : userdata)
+            for (auto entry : userdata)
             {
-                if (entry.user == rev.user)
+                if (entry.user == r.user)
                 {
-                    entry.review = rev.review;
+                    entry.review = r.review;
                     found = true;
                     break;
                 }
             }
             if (!found)
-                userdata.push_back({rev.user, 0, rev.review});
+                userdata.push_back({r.user, 0, r.review});
         }
 
-        for (auto& entry : userdata)
+        for (auto entry : userdata)
             userdataFile << i << "|" << entry.user << "|" << entry.rating << "|" << entry.review << "\n";
     }
 }
@@ -199,7 +199,7 @@ void Database::addMovie(Movie m)
 
 void Database::removeMovie(int index)
 {
-    if (index < 0 || index >= static_cast<int>(movies.size()))
+    if (index < 0 || index >= (int)movies.size())
         return;
 
     movies.erase(movies.begin() + index);
