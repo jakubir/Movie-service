@@ -19,7 +19,7 @@ void Database::loadUsers()
     
     if (!file.is_open()) 
     {
-        std::cout << "Could not open users.txt\n";
+        //std::cout << "Could not open users.txt\n";
         return;
     }
 
@@ -40,7 +40,7 @@ void Database::saveUsers()
 
     if (!file.is_open()) 
     {
-        std::cout << "Could not open users.txt\n";
+        //std::cout << "Could not open users.txt\n";
         return;
     }
 
@@ -56,7 +56,7 @@ void Database::loadMovies()
 
     if (!moviesFile.is_open()) 
     {
-        std::cout << "Could not open movies.txt\n";
+        //std::cout << "Could not open movies.txt\n";
         return;
     }
 
@@ -79,7 +79,7 @@ void Database::loadMovies()
 
     if (!userdataFile.is_open()) 
     {
-        std::cout << "Could not open userdata.txt\n";
+        //std::cout << "Could not open userdata.txt\n";
         return;
     }
 
@@ -116,7 +116,7 @@ void Database::saveMovies()
 
     if (!moviesFile.is_open()) 
     {
-        std::cout << "Could not open movies.txt\n";
+        //std::cout << "Could not open movies.txt\n";
         return;
     }
 
@@ -128,7 +128,7 @@ void Database::saveMovies()
 
     if (!userdataFile.is_open()) 
     {
-        std::cout << "Could not open userdata.txt\n";
+        //std::cout << "Could not open userdata.txt\n";
         return;
     }
 
