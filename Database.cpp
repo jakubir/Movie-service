@@ -120,7 +120,7 @@ void Database::saveMovies()
         return;
     }
 
-    for (auto& m : movies) {
+    for (auto m : movies) {
         moviesFile << m.getTitle() << "|" << m.getDirector() << "|" << m.getYear() << "\n";
     }
 
@@ -142,7 +142,7 @@ void Database::saveMovies()
         for (auto r : m.getRatings())
         {
             bool found = false;
-            for (auto entry : userdata)
+            for (auto& entry : userdata)
             {
                 if (entry.user == r.user)
                 {
@@ -158,7 +158,7 @@ void Database::saveMovies()
         for (auto r : m.getReviews())
         {
             bool found = false;
-            for (auto entry : userdata)
+            for (auto& entry : userdata)
             {
                 if (entry.user == r.user)
                 {
