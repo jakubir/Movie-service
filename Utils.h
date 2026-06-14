@@ -4,6 +4,6 @@
 #include <iostream>
 #include <limits>
 
-bool readIndex(int& value);
+bool readInt(int& value);
 
 #endif

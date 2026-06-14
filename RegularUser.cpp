@@ -19,7 +19,7 @@ void RegularUser::menu(Database& db)
 		std::cout << "5. Logout\n";
 		std::cout << "Choice: ";
 
-		if (!readIndex(choice)) 
+		if (!readInt(choice)) 
 		{
 			std::cout << "Invalid choice\n";
 			continue;
@@ -52,7 +52,7 @@ void RegularUser::rateMovie(Database& db)
 	int index;
 	std::cout << "Enter movie index to rate: ";
 
-	if (!readIndex(index)) 
+	if (!readInt(index)) 
 	{
 		std::cout << "Invalid index.\n";
 		return;
@@ -63,7 +63,7 @@ void RegularUser::rateMovie(Database& db)
 		int rating;
 		std::cout << "Enter rating (1-10, or 0 to remove): ";
 
-		if (!readIndex(rating)) // allow only integers for rating
+		if (!readInt(rating)) // allow only integers for rating
 		{
 			std::cout << "Invalid rating.\n";
 			return;
@@ -92,7 +92,7 @@ void RegularUser::viewMovieReviews(Database& db)
 	int index;
 	std::cout << "Enter movie index to view reviews: ";
 
-	if (!readIndex(index)) // allow only integers for index
+	if (!readInt(index)) // allow only integers for index
 	{
 		std::cout << "Invalid index.\n";
 		return;
@@ -117,7 +117,7 @@ void RegularUser::addReview(Database& db)
 	int index;
 	std::cout << "Enter movie index to review: ";
 
-	if (!readIndex(index)) // allow only integers for index
+	if (!readInt(index)) // allow only integers for index
 	{
 		std::cout << "Invalid index.\n";
 		return;

@@ -1,8 +1,8 @@
 #include "Utils.h"
 
-bool readIndex(int& value)
+bool readInt(int& value)
 {
-    if (!(std::cin >> value)) // validate input is an integer
+    if (!(std::cin >> value)) // validate if input is an integer
     {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');

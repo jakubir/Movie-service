@@ -18,7 +18,7 @@ void Admin::menu(Database& db)
 		std::cout << "4. Logout\n";
 		std::cout << "Choice: ";
 
-		if (!readIndex(choice)) 
+		if (!readInt(choice)) 
 		{
 			std::cout << "Invalid choice\n";
 			continue;
@@ -62,7 +62,7 @@ void Admin::addMovie(Database& db)
 	}
 
 	std::cout << "Enter year: ";
-	if (!readIndex(year))
+	if (!readInt(year))
 	{
 		std::cout << "Invalid year.\n";
 		return;
@@ -77,7 +77,7 @@ void Admin::deleteMovie(Database& db)
 	int index;
 	std::cout << "Enter movie index to delete: ";
 
-	if (!readIndex(index)) // allow only integers for index
+	if (!readInt(index)) // allow only integers for index
 	{
 		std::cout << "Invalid index.\n";
 		return;

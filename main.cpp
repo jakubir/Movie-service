@@ -25,7 +25,7 @@ int main()
 		std::cout << "3. Exit\n";
 		std::cout << "Choice: ";
 
-		if (!readIndex(choice)) {
+		if (!readInt(choice)) {
 			std::cout << "Invalid choice\n";
 			continue;
 		}
